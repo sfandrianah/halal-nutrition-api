@@ -9,6 +9,7 @@ use App\Model\MasterAttachment;
 use App\Model\MasterCertificateStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class APIAttachmentController extends APIController
 {
@@ -43,6 +44,7 @@ class APIAttachmentController extends APIController
 //        echo '<br>';
 
         //Display File Mime Type
+		if ($file->isValid()) {
         $mimeType = $file->getMimeType();
 //        echo 'File Mime Type: ' . $file->getMimeType();
         $years = date('Y');
@@ -85,6 +87,19 @@ class APIAttachmentController extends APIController
             $result = false;
             $message = "Upload Attachment Failed";
         }
+		} else {
+			if (isset($input['referenceTable'])) {
+				Log::emergency('REFERENCE TABLE: '.$input['referenceTable']);
+			}
+			if (isset($input['referenceId'])) {
+				Log::emergency('REFERENCE ID: '.$input['referenceId']);
+			}
+			if (isset($_FILES['files'])) {
+				Log::emergency('FILES: '.json_encode($_FILES['files']));
+			}
+			$result = false;
+			$message = "File Not Found";
+		}
         $resultData = array(
             "result" => $result,
             "message" => $message,

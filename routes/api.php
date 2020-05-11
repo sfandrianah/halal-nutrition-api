@@ -29,3 +29,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('attachment/upload', 'Api\APIAttachmentController@upload');
 });
 Route::get('certificate-status', 'Api\APIMasterCertificateStatusController@list');
+Route::get('certificate-type', 'Api\APIMasterCertificateTypeController@list');
+Route::get('news', 'Api\APIMasterNewsController@list');

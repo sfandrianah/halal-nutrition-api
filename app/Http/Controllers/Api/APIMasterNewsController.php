@@ -9,15 +9,16 @@ use App\Model\MasterAttachment;
 use App\Model\MasterCertificate;
 use App\Model\MasterCertificateStatus;
 use App\Model\MasterItem;
+use App\Model\MasterNews;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class APIMasterItemController extends APIController
+class APIMasterNewsController extends APIController
 {
     public function __construct()
     {
-        $this->model = MasterItem::class;
+        $this->model = MasterNews::class;
         parent::__construct();
     }
 
@@ -37,13 +38,14 @@ class APIMasterItemController extends APIController
         $fixData = array();
         for ($no = 0; $no < count($data_2['data']); $no++) {
             $itemId = $data_2['data'][$no]['id'];
-            $dataCertificate = MasterCertificate::where('item_id', $itemId)->get();
+            $fromUserId =  $data_2['data'][$no]['user_id'];
+            $dataUser = User::where('id', $fromUserId)->get();
             $data_3 = $data_2['data'][$no];
             $dataAttach = MasterAttachment::where('reference_id', $itemId)
-                ->where('reference_table','mst_item')
+                ->where('reference_table','mst_news')
                 ->get();
             $fixDatas = array_merge($data_3, array(
-                "certificate" => $dataCertificate,
+                "user" => $dataUser,
                 "image" => $dataAttach
             ));
             array_push($fixData, $fixDatas);
