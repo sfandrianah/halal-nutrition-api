@@ -25,9 +25,12 @@ Route::group(['middleware' => 'auth:api'], function () {
 	Route::post('user/update/password', 'Api\AuthController@updatePassword');
 	Route::post('user/update', 'Api\AuthController@update');
     Route::post('item', 'Api\APIMasterItemController@insert');
-    Route::get('item', 'Api\APIMasterItemController@list');
+	Route::get('item/me', 'Api\APIMasterItemController@list');
     Route::post('attachment/upload', 'Api\APIAttachmentController@upload');
 });
+Route::get('item', 'Api\APIMasterItemController@list');
 Route::get('certificate-status', 'Api\APIMasterCertificateStatusController@list');
 Route::get('certificate-type', 'Api\APIMasterCertificateTypeController@list');
 Route::get('news', 'Api\APIMasterNewsController@list');
+Route::get('venues', 'Api\APIMasterVenuesController@list');
+Route::get('venues/{id}/schedule/now', 'Api\APIMasterVenuesController@scheduleNow');

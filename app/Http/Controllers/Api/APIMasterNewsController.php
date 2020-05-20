@@ -39,12 +39,17 @@ class APIMasterNewsController extends APIController
         for ($no = 0; $no < count($data_2['data']); $no++) {
             $itemId = $data_2['data'][$no]['id'];
             $fromUserId =  $data_2['data'][$no]['user_id'];
+			$created_at =  $data_2['data'][$no]['created_at'];
+			$d = \DateTime::createFromFormat('Y-m-d H:i:s',$created_at);
+			$createdAtFormat = $d->format('d/m/Y H:i'); 	
+			
             $dataUser = User::where('id', $fromUserId)->get();
             $data_3 = $data_2['data'][$no];
             $dataAttach = MasterAttachment::where('reference_id', $itemId)
                 ->where('reference_table','mst_news')
                 ->get();
             $fixDatas = array_merge($data_3, array(
+				"strDate" => $createdAtFormat,
                 "user" => $dataUser,
                 "image" => $dataAttach
             ));

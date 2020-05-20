@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e0e598a1-5dbb-42e0-88f4-65f5fc6817e5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIAttachmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIAttachmentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterItemController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterItemController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Model/MasterCertificate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Model/MasterCertificate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterNewsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterNewsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -165,6 +165,8 @@
       <workItem from="1588089476230" duration="670000" />
       <workItem from="1588694093012" duration="23810000" />
       <workItem from="1589136227877" duration="1753000" />
+      <workItem from="1589873440600" duration="667000" />
+      <workItem from="1590000850620" duration="5121000" />
     </task>
     <servers />
   </component>
@@ -180,10 +182,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="120" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1588735423537" />
+    <state x="463" y="120" key="FileChooserDialogImpl" timestamp="1589882973223">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="120" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1589882973223" />
     <state x="366" y="179" key="NewPhpClassDialog" timestamp="1588705346598">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="366" y="179" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1588705346598" />
+    <state x="339" y="162" key="run.anything.popup" timestamp="1590001978026">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1590001978026" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1588082321363">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

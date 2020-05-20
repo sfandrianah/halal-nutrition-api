@@ -23,14 +23,70 @@ class APIMasterItemController extends APIController
 
     public function list(Request $request)
     {
+		$mainDir = $GLOBALS['MAIN_DIRECTORY'];
+		$user = Auth::user();
         $input = $request->all();
         $resultData = $this->model;
+		//echo json_encode($user);
+		if(isset($user)){
+			//echo "mAU";
+			$userId = $user['id'];
+			$resultData = $resultData::where('user_id',$userId);
+		}	
+		$search = "";
+		if(isset($input["search"])){
+			$search = $input["search"];
+		}
+		
+		$key = "";
+		if(isset($input["key"])){
+			$key = $input["key"];
+		}
+		
+		$value = "";
+		if(isset($input["value"])){
+			$value = $input["value"];
+		}
         if (isset($input['status'])) {
-            $resultData = $resultData::where('status', $input['status']);
-
+			
+			if(isset($user)){
+				if($key == "" || $value == ""){
+					$resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->where('status', $input['status']);
+				} else {
+					$resultData = $resultData->where($key, $value);
+				}
+			} else {
+				if($key == "" || $value == ""){
+					$resultData = $resultData::orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->where('status', $input['status']);
+				} else {
+					$resultData = $resultData::where($key, $value);
+				}
+			} 
+			//echo "masuk";
+			
             $resultData = $resultData->paginate(5);
         } else {
-            $resultData = $resultData::paginate(5);
+			
+			if(isset($user)){
+				if($key == "" || $value == ""){
+					$resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->paginate(5);
+				} else {
+					$resultData = $resultData->where($key, $value);
+					$resultData = $resultData->paginate(5);
+				}
+			} else {
+				if($key == "" || $value == ""){
+					$resultData = $resultData::orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->paginate(5);
+				} else {
+					$resultData = $resultData::where($key, $value);
+					$resultData = $resultData->paginate(5);
+				}
+			}
+            
         }
         $custom = collect();
         $data_2 = $custom->merge($resultData);
@@ -42,6 +98,16 @@ class APIMasterItemController extends APIController
             $dataAttach = MasterAttachment::where('reference_id', $itemId)
                 ->where('reference_table','mst_item')
                 ->get();
+			for($no_1=0;$no_1<count($dataAttach);$no_1++){
+				$dataPathIMG = $dataAttach[$no_1]["path"];
+				$dataFilename = $dataAttach[$no_1]["filename"];
+				$fileUrl = $dataAttach[$no_1]["url"];
+				//echo $mainDir."\\uploads\\".$dataPathIMG.$dataFilename;
+				if(file_exists($mainDir."/uploads/".$dataPathIMG."/".$dataFilename)){
+					$fileUrl = URL("/uploads/".$dataPathIMG."/".$dataFilename);
+				}
+				$dataAttach[$no_1]["url"] = $fileUrl; 
+			}
             $fixDatas = array_merge($data_3, array(
                 "certificate" => $dataCertificate,
                 "image" => $dataAttach
