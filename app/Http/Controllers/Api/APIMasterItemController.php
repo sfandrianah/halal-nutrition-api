@@ -9,6 +9,7 @@ use App\Model\MasterAttachment;
 use App\Model\MasterCertificate;
 use App\Model\MasterCertificateStatus;
 use App\Model\MasterItem;
+use App\Model\MasterNutrition;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -32,23 +33,23 @@ class APIMasterItemController extends APIController
 			//echo "mAU";
 			$userId = $user['id'];
 			$resultData = $resultData::where('user_id',$userId);
-		}	
+		}
 		$search = "";
 		if(isset($input["search"])){
 			$search = $input["search"];
 		}
-		
+
 		$key = "";
 		if(isset($input["key"])){
 			$key = $input["key"];
 		}
-		
+
 		$value = "";
 		if(isset($input["value"])){
 			$value = $input["value"];
 		}
         if (isset($input['status'])) {
-			
+
 			if(isset($user)){
 				if($key == "" || $value == ""){
 					$resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
@@ -62,31 +63,31 @@ class APIMasterItemController extends APIController
 					$resultData = $resultData->where('status', $input['status']);
 				} else {
 					$resultData = $resultData::where($key, $value);
-				}
-			} 
-			//echo "masuk";
-			
-            $resultData = $resultData->paginate(5);
-        } else {
-			
-			if(isset($user)){
-				if($key == "" || $value == ""){
-					$resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
-					$resultData = $resultData->paginate(5);
-				} else {
-					$resultData = $resultData->where($key, $value);
-					$resultData = $resultData->paginate(5);
-				}
-			} else {
-				if($key == "" || $value == ""){
-					$resultData = $resultData::orWhere('name', 'like', '%' . $search . '%');
-					$resultData = $resultData->paginate(5);
-				} else {
-					$resultData = $resultData::where($key, $value);
-					$resultData = $resultData->paginate(5);
 				}
 			}
-            
+			//echo "masuk";
+
+            $resultData = $resultData->paginate(10);
+        } else {
+
+			if(isset($user)){
+				if($key == "" || $value == ""){
+					$resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->paginate(10);
+				} else {
+					$resultData = $resultData->where($key, $value);
+					$resultData = $resultData->paginate(10);
+				}
+			} else {
+				if($key == "" || $value == ""){
+					$resultData = $resultData::orWhere('name', 'like', '%' . $search . '%');
+					$resultData = $resultData->paginate(10);
+				} else {
+					$resultData = $resultData::where($key, $value);
+					$resultData = $resultData->paginate(10);
+				}
+			}
+
         }
         $custom = collect();
         $data_2 = $custom->merge($resultData);
@@ -106,11 +107,45 @@ class APIMasterItemController extends APIController
 				if(file_exists($mainDir."/uploads/".$dataPathIMG."/".$dataFilename)){
 					$fileUrl = URL("/uploads/".$dataPathIMG."/".$dataFilename);
 				}
-				$dataAttach[$no_1]["url"] = $fileUrl; 
+				$dataAttach[$no_1]["url"] = $fileUrl;
 			}
+
+
+            $dataNutritionServing = MasterNutrition::where('item_id', $itemId)
+                ->where('parent_id', null)
+                ->where('type', 1)
+                ->orderBy('order', 'ASC')
+                ->get();
+
+            for($no_1=0;$no_1<count($dataNutritionServing);$no_1++){
+                $nutritionId = $dataNutritionServing[$no_1]['id'];
+                $dataNutritionChild = MasterNutrition::where('parent_id', $nutritionId)
+                    ->orderBy('order', 'ASC')
+                    ->get();
+                $dataNutritionServing[$no_1]['child'] = $dataNutritionChild;
+            }
+
+            $dataNutritionDailyValue = MasterNutrition::where('item_id', $itemId)
+                ->where('parent_id', null)
+                ->where('type', 2)
+                ->orderBy('order', 'ASC')
+                ->get();
+
+            for($no_1=0;$no_1<count($dataNutritionDailyValue);$no_1++){
+                $nutritionId = $dataNutritionDailyValue[$no_1]['id'];
+                $dataNutritionChild = MasterNutrition::where('parent_id', $nutritionId)
+                    ->orderBy('order', 'ASC')
+                    ->get();
+                $dataNutritionDailyValue[$no_1]['child'] = $dataNutritionChild;
+            }
+//            $nutrition = $dataNutritionServing;
             $fixDatas = array_merge($data_3, array(
                 "certificate" => $dataCertificate,
-                "image" => $dataAttach
+                "image" => $dataAttach,
+                "nutrition"=>array(
+                    "serving" => $dataNutritionServing,
+                    "daily_value" => $dataNutritionDailyValue
+                )
             ));
             array_push($fixData, $fixDatas);
         }

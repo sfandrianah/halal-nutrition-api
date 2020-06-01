@@ -34,3 +34,4 @@ Route::get('certificate-type', 'Api\APIMasterCertificateTypeController@list');
 Route::get('news', 'Api\APIMasterNewsController@list');
 Route::get('venues', 'Api\APIMasterVenuesController@list');
 Route::get('venues/{id}/schedule/now', 'Api\APIMasterVenuesController@scheduleNow');
+Route::get('venues/directions', 'Api\APIMasterVenuesController@getDirections');

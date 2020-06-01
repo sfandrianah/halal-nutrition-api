@@ -29,9 +29,9 @@ class APIMasterNewsController extends APIController
         if (isset($input['status'])) {
             $resultData = $resultData::where('status', $input['status']);
 
-            $resultData = $resultData->paginate(5);
+            $resultData = $resultData->paginate(10);
         } else {
-            $resultData = $resultData::paginate(5);
+            $resultData = $resultData::paginate(10);
         }
         $custom = collect();
         $data_2 = $custom->merge($resultData);

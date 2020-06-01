@@ -4,8 +4,7 @@
     <list default="true" id="e0e598a1-5dbb-42e0-88f4-65f5fc6817e5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterItemController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterItemController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterNewsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterNewsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterVenuesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/APIMasterVenuesController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -136,13 +135,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Http/Controllers/Api" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Model" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\skripsi\purnomo\halal-nutrition-api\app\Http\Controllers\Api" />
       <recent name="C:\xampp\htdocs\skripsi\purnomo\halal-nutrition-api\app\Model" />
+      <recent name="C:\xampp\htdocs\skripsi\purnomo\halal-nutrition-api\app\Http\Controllers\Api" />
     </key>
   </component>
   <component name="RunManager">
@@ -166,7 +165,9 @@
       <workItem from="1588694093012" duration="23810000" />
       <workItem from="1589136227877" duration="1753000" />
       <workItem from="1589873440600" duration="667000" />
-      <workItem from="1590000850620" duration="5121000" />
+      <workItem from="1590000850620" duration="5124000" />
+      <workItem from="1590371532737" duration="73000" />
+      <workItem from="1590908892042" duration="3451000" />
     </task>
     <servers />
   </component>

@@ -69,24 +69,24 @@ class APIMasterVenuesController extends APIController
             }
             //echo "masuk";
 
-            $resultData = $resultData->paginate(5);
+            $resultData = $resultData->paginate(10);
         } else {
 
             if (isset($user)) {
                 if ($key == "" || $value == "") {
                     $resultData = $resultData->orWhere('name', 'like', '%' . $search . '%');
-                    $resultData = $resultData->paginate(5);
+                    $resultData = $resultData->paginate(10);
                 } else {
                     $resultData = $resultData->where($key, $value);
-                    $resultData = $resultData->paginate(5);
+                    $resultData = $resultData->paginate(10);
                 }
             } else {
                 if ($key == "" || $value == "") {
                     $resultData = $resultData::orWhere('name', 'like', '%' . $search . '%');
-                    $resultData = $resultData->paginate(5);
+                    $resultData = $resultData->paginate(10);
                 } else {
                     $resultData = $resultData::where($key, $value);
-                    $resultData = $resultData->paginate(5);
+                    $resultData = $resultData->paginate(10);
                 }
             }
 
@@ -125,9 +125,11 @@ class APIMasterVenuesController extends APIController
                 $dataFilename = $dataAttach[$no_1]["filename"];
                 $fileUrl = $dataAttach[$no_1]["url"];
                 //echo $mainDir."\\uploads\\".$dataPathIMG.$dataFilename;
+				if($dataPathIMG != null || $dataFilename != null){
                 if (file_exists($mainDir . "/uploads/" . $dataPathIMG . "/" . $dataFilename)) {
                     $fileUrl = URL("/uploads/" . $dataPathIMG . "/" . $dataFilename);
                 }
+				}
                 $dataAttach[$no_1]["url"] = $fileUrl;
             }
             $fixDatas = array_merge($data_3, array(
@@ -206,5 +208,39 @@ class APIMasterVenuesController extends APIController
         );
         return response()->json($resultJsonData, 200);
     }
+	public function getDirections(Request $request)
+    {
+		//$endpoint = "http://my.domain.com/test.php";
+		$input = $request->all();
+		$origin = $input["origin"];
+		$destination = $input["destination"];
+		$key = $input["key"];
+		//$endpoint =  "https://maps.googleapis.com/maps/api/directions/json";
+		$endpoint =  "https://maps.googleapis.com/maps/api/directions/json?origin=".$origin."&destination=".$destination."&key=".$key."&sensor=true";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $endpoint);
+		// SSL important
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		//curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
+		$output = curl_exec($ch);
+		curl_close($ch);
+
+		/*
+		$client = new \GuzzleHttp\Client();
+		$response = $client->request('GET', $endpoint, ['query' => [
+			'origin' => $origin, 
+			'destination' => $destination,
+			'key' => $key,
+			'sensor' => "true",
+		]]);
+
+		// url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
+
+		$statusCode = $response->getStatusCode();
+		$content = $response->getBody();
+		*/
+		return $output;
+	}
 }
