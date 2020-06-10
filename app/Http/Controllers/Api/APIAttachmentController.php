@@ -56,37 +56,61 @@ class APIAttachmentController extends APIController
         }
         $path = '/attachment/' . $type . '/' . $years . '/' . $month . '/' . $day;
         $destinationPath = $mainDir . '/uploads';
+		$explodeFilename = explode("?",$file->getClientOriginalName());
+		$fixFilename = $file->getClientOriginalName();
+		if(isset($explodeFilename[1])){
+			$fixFilename = 	$explodeFilename[0];
+		}
         $data = array(
             "mime" => $mimeType,
             "type" => $type,
             "path" => $path,
             "user_id" => $userId,
-            "filename" => $file->getClientOriginalName(),
+            "filename" => $fixFilename,
             "status" => 1
         );
         if (isset($input['referenceId'])) {
             $referenceId = $input['referenceId'];
             $data = array_merge($data, array("reference_id" => $referenceId));
         }
+		$attachmentId = 0;
+		if (isset($input['attachmentId'])) {
+            $attachmentId = $input['attachmentId'];
+         //   $data = array_merge($data, array("reference_id" => $referenceId));
+        }
         if (isset($input['referenceTable'])) {
             $referenceTable = $input['referenceTable'];
             $data = array_merge($data, array("reference_table" => $referenceTable));
         }
-        $insertAttachment = MasterAttachment::create($data);
-        $result = true;
-        $message = "";
-        if (isset($insertAttachment['id'])) {
-            if (is_numeric($insertAttachment['id'])) {
-                $file->move($destinationPath . $path, $file->getClientOriginalName());
-                $message = "Upload Attachment Success";
-            } else {
-                $result = false;
-                $message = "Upload Attachment Failed";
-            }
-        } else {
-            $result = false;
-            $message = "Upload Attachment Failed";
-        }
+		if($attachmentId == 0){
+			$insertAttachment = MasterAttachment::create($data);
+			$result = true;
+			$message = "";
+			if (isset($insertAttachment['id'])) {
+				if (is_numeric($insertAttachment['id'])) {
+					$file->move($destinationPath . $path, $fixFilename);
+					$message = "Upload Attachment Success";
+				} else {
+					$result = false;
+					$message = "Upload Attachment Failed";
+				}
+			} else {
+				$result = false;
+				$message = "Upload Attachment Failed";
+			}
+		} else {
+			$insertAttachment = MasterAttachment::where("id",$attachmentId)->update($data);
+			$result = true;
+			$message = "";
+			if (isset($insertAttachment)) {
+				$file->move($destinationPath . $path, $fixFilename);
+				$message = "Upload Attachment Success";
+			} else {
+				$result = false;
+				$message = "Upload Attachment Failed";
+			}
+		}
+        
 		} else {
 			if (isset($input['referenceTable'])) {
 				Log::emergency('REFERENCE TABLE: '.$input['referenceTable']);

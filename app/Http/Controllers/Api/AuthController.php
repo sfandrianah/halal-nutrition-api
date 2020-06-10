@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Model\MasterAttachment;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -42,8 +43,31 @@ class AuthController extends Controller
     }
 
     public function getUser() {
+		$mainDir = $GLOBALS['MAIN_DIRECTORY'];
         $user = Auth::user();
-        return response()->json($user->only(['id','name','email','address']), $this->successStatus);
+		$rsData = $user->only(['id','name','email','address']);
+		//echo 
+		$dataAttach = MasterAttachment::where('reference_id', $user["id"])
+                ->where('reference_table','users')
+                ->get();
+//				echo json_encode($dataAttach);
+		$attachmentUrl = "";
+		$attachmentId = 0;
+		if(count($dataAttach) > 0){
+			$dataPathIMG = $dataAttach[0]["path"];
+			$dataFilename = $dataAttach[0]["filename"];
+			$fileUrl = $dataAttach[0]["url"];
+			//echo $mainDir."\\uploads\\".$dataPathIMG.$dataFilename;
+			if(file_exists($mainDir."/uploads/".$dataPathIMG."/".$dataFilename)){
+				$fileUrl = URL("/uploads/".$dataPathIMG."/".$dataFilename);
+			}
+			$attachmentUrl = $fileUrl;
+			$attachmentId = $dataAttach[0]["id"];	
+		}
+		$rsData["attachmentUrl"] = $attachmentUrl;
+		$rsData["attachmentId"] = $attachmentId;
+		
+        return response()->json($rsData, $this->successStatus);
     }
 	
 	public function update(Request $request) {
